@@ -15,7 +15,7 @@ export default defineConfig({
     proxy:{
       '/api':{
         target:'https://mern-user-management-hp7o.onrender.com/',
-        changeOrigin:true
+        changeOrigin:true,
       }
     }
   }
