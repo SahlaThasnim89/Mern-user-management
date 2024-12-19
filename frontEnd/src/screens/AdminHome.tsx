@@ -26,6 +26,7 @@ const AdminHome = () => {
 
   const getUser = async () => {
     try {
+      console.log(currentUser)
       const res = await axios.get("/api/admin/home");
       const userProfile = res.data;
       setCurrentUser(userProfile);

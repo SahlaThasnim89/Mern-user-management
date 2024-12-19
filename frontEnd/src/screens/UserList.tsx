@@ -106,6 +106,7 @@ const UserList:React.FC  = () => {
   };
 
   const BlockUser = async ( id:string,isBlocked:boolean) => {
+    console.log(blocked)
     try {
       const res = await axios.patch(`/api/admin/deleteUser/${id}`,{
         isBlocked:!isBlocked,
