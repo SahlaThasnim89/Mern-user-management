@@ -89,7 +89,7 @@ function AdminLogin() {
       .reverse()
       .forEach((e) => {
         toast.error("sign up failed", {
-          description: e.message,
+          description: e.message as string,
         });
       });
   };
