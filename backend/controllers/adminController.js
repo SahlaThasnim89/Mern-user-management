@@ -1,7 +1,7 @@
 import asyncHandler from 'express-async-handler'
 import generateToken from '../utils/generateToken.js'
 import User from '../models/userModel.js'
-import { toast } from 'react-toastify'
+// import { toast } from 'react-toastify'
 
 
 //@desc Auth user/set token 
