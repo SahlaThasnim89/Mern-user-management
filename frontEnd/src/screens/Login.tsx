@@ -16,11 +16,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { login, logout, selectUser, counter } from "@/features/userSlice";
+import { login, logout, selectUser} from "@/features/userSlice";
 import { useEffect } from "react";
-import { useLoginMutation } from "@/features/usersApiSlice";
-import Loader from "@/components/Loader";
-logout;
+// import { useLoginMutation } from "@/features/usersApiSlice";
+// import Loader from "@/components/Loader";
+
 
 export const description =
   "A login form with email and password. There's an option to login with Google and a link to sign up if you don't have an account.";
@@ -29,14 +29,14 @@ function Login() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    // formState: { errors, isSubmitting },
     setError,
   } = useForm<TloginSchema>({ resolver: zodResolver(loginSchema) });
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [loginApiCall, { isLoading }] = useLoginMutation();
+  // const [{ isLoading }] = useLoginMutation();
 
   const user = useSelector(selectUser);
 
@@ -92,12 +92,12 @@ function Login() {
     }
   };
 
-  const errHandler = (e: any) => {
-    Object.values(e)
+  const errHandler = (e: unknown) => {
+    Object.values(e as { message: string }[])
       .reverse()
       .forEach((e) => {
         toast.error("sign up failed", {
-          description: e.message as string,
+          description: e.message,
         });
       });
   };
@@ -135,13 +135,13 @@ function Login() {
                 {...register("password")}
               />
             </div>
-            {isLoading && <Loader />}
+            {/* {isLoading && <Loader />} */}
             <Button type="submit" className="w-full">
               Login
             </Button>
           </div>
           <div className="mt-4 text-center text-sm">
-            Don&apos;t have an account?{" "}
+            Don't have an account?{" "}
             <Link to="/register" className="underline">
               Sign up
             </Link>

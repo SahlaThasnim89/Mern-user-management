@@ -6,7 +6,7 @@ import {createSlice} from '@reduxjs/toolkit'
 // }
 
 const initialState={
-    user:localStorage.getItem('user')?JSON.parse(localStorage.getItem('user')):null,
+    user:localStorage.getItem('user')?JSON.parse(localStorage.getItem('user')as string):null,
     loading:false,
     error:null,
     value:0
@@ -24,15 +24,12 @@ export const userSlice=createSlice({
            state.user=null 
            localStorage.removeItem('user')
         },
-        counter:(state,action)=>{
-            state.value+=1
-        }
     }
 })
 
 
 
-export const {login,logout,counter}=userSlice.actions;
+export const {login,logout}=userSlice.actions;
 
 export const selectUser=(state:any)=>state.user.user;
 

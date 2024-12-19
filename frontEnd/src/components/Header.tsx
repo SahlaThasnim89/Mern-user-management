@@ -1,12 +1,11 @@
-import React, { useEffect } from "react";
+
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { CircleUser, Menu, Package2, Search } from "lucide-react";
+import { CircleUser, Menu, Package2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -38,7 +37,8 @@ const Header = () => {
 
   // const [logoutApiCall]=useLogoutMutation()
 
-  const handleLogOut = async (e) => {
+  const handleLogOut = async (e:any) => {
+    e.preventDefault();
     try {
       const res = await axios.post("/api/logout");
       if (res.data.errors) {
@@ -57,12 +57,13 @@ const Header = () => {
         },100)
 
       }
-    } catch (error) {
+    } catch (error:any) {
       console.log(error.message);
     }
   };
 
-  const getProfile = async (e) => {
+  const getProfile = async (e:any) => {
+    e.preventDefault();
     try {
       const res = await axios.get("/api/account");
       if (res.data.errors) {
@@ -70,7 +71,7 @@ const Header = () => {
       } else {
         navigate("/account");
       }
-    } catch (error) {
+    } catch (error:any) {
       console.log(error.message);
     }
   };
@@ -129,7 +130,7 @@ const Header = () => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={(e) => handleLogOut(e)}>
+                <DropdownMenuItem onClick={handleLogOut}>
                   Logout
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -153,7 +154,7 @@ const Header = () => {
                         <span>
                           {user.name
                             .split(" ")
-                            .map((word) => word.charAt(0).toUpperCase())
+                            .map((word:string) => word.charAt(0).toUpperCase())
                             .join("")}
                         </span>
                       </div>
@@ -164,13 +165,13 @@ const Header = () => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   {/* <Link to='/account'> */}
-                  <DropdownMenuItem onClick={(e) => getProfile(e)}>
+                  <DropdownMenuItem onClick={getProfile}>
                     My Account
                   </DropdownMenuItem>
                   {/* </Link> */}
                   <DropdownMenuSeparator />
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={(e) => handleLogOut(e)}>
+                  <DropdownMenuItem onClick={handleLogOut}>
                     Logout
                   </DropdownMenuItem>
                 </DropdownMenuContent>

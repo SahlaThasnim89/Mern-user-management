@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { PlusCircle, Search, UserRoundPen, UserRoundX, UserRoundCheck} from "lucide-react";
 import { UserRound } from "lucide-react";
 import {
@@ -53,10 +53,20 @@ import {
 } from "@/components/ui/alert-dialog";
 
 
-const UserList = () => {
-  const [users, setUsers] = useState(null);
-  const [blocked,setBlocked]=useState(new Set())
-  const [searchQuery, setSearchQuery] = useState("");
+interface User {
+  _id: string;
+  name: string;
+  email: string;
+  image?: string;
+  createdAt: string;
+  isBlocked: boolean;
+}
+
+
+const UserList:React.FC  = () => {
+  const [users, setUsers] = useState<User[] | null>(null);
+  const [blocked,setBlocked]=useState<Set<string>>(new Set())
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const user = useSelector(selectUser);
   const navigate = useNavigate();
 
@@ -66,7 +76,7 @@ const UserList = () => {
     }
   }, [user]);
 
-  const getUsers = async (e) => {
+  const getUsers = async () => {
     try {
       const res = await axios.get("/api/admin/usersList");
       if (res.data.errors) {
@@ -74,28 +84,28 @@ const UserList = () => {
       } else {
         setUsers(res.data);
       }
-    } catch (error) {
+    } catch (error:any) {
       console.log(error.message);
     }
   };
 
-  const getCreatePage = async (e) => {
+  const getCreatePage = async () => {
     try {
       navigate("/admin/createUser");
-    } catch (error) {
+    } catch (error:any) {
       console.log(error.message);
     }
   };
 
-  const getEditPage = async (e, id) => {
+  const getEditPage = async ( id:string) => {
     try {
       navigate(`/admin/editUser/${id}`);
-    } catch (error) {
+    } catch (error:any) {
       console.log(error.message);
     }
   };
 
-  const BlockUser = async (e, id,isBlocked) => {
+  const BlockUser = async ( id:string,isBlocked:boolean) => {
     try {
       const res = await axios.patch(`/api/admin/deleteUser/${id}`,{
         isBlocked:!isBlocked,
@@ -103,7 +113,7 @@ const UserList = () => {
 
       const updatedUser = res.data;
       setUsers((prevUsers) => 
-        prevUsers.map((user) => 
+        (prevUsers ?? []).map((user) => 
           user._id === updatedUser._id ? updatedUser : user
         )
       );
@@ -226,7 +236,7 @@ const UserList = () => {
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        {FilterUser?.length > 0 ? (
+                        {FilterUser && FilterUser.length > 0 ? (
                           FilterUser?.map((user) => (
                             <TableRow key={user._id}>
                               <TableCell className="hidden sm:table-cell">
@@ -277,8 +287,8 @@ const UserList = () => {
                                         variant="secondary"
                                         size="icon"
                                         className="rounded-full"
-                                        onClick={(e) =>
-                                          getEditPage(e, user._id)
+                                        onClick={() =>
+                                          getEditPage(user._id)
                                         }
                                       >
                                         <UserRoundPen className="h-5 w-5" />
@@ -324,8 +334,8 @@ const UserList = () => {
                                               Cancel
                                             </AlertDialogCancel>
                                             <AlertDialogAction
-                                              onClick={(e) =>
-                                                BlockUser(e, user._id,user.isBlocked)
+                                              onClick={() =>
+                                                BlockUser( user._id,user.isBlocked)
                                               }
                                             >
                                               Continue

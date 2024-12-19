@@ -11,7 +11,6 @@ import { CircleUser } from "lucide-react";
 import { useSelector } from "react-redux";
 import { selectUser } from "@/features/userSlice";
 import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
 import axios from "axios";
 
 const AdminHome = () => {
@@ -35,10 +34,11 @@ const AdminHome = () => {
     }
   };
 
-  const getDashboard = async (e) => {
+  const getDashboard = async (e:React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     try {
       navigate("/admin/userList");
-    } catch (error) {
+    } catch (error:any) {
       console.log(error.message);
     }
   };

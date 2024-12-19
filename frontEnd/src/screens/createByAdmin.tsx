@@ -8,17 +8,16 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Link, useNavigate } from "react-router-dom";
-import { SubmitErrorHandler, SubmitHandler, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { useEffect, useState } from "react";
 import axios from "axios";
 import { signUpSchema, TsignUpSchema } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useDispatch, useSelector } from "react-redux";
-import { login, selectUser } from "@/features/userSlice";
-import Loader from "@/components/Loader";
-import { useRegisterMutation } from "@/features/usersApiSlice";
+import { useDispatch } from "react-redux";
+import { login } from "@/features/userSlice";
+// import Loader from "@/components/Loader";
+// import { useRegisterMutation } from "@/features/usersApiSlice";
 
 // type formFields = {
 //   name: string;
@@ -35,16 +34,16 @@ function CreateByAdmin() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    // formState: { errors, isSubmitting },
     // reset,
     setError,
   } = useForm<TsignUpSchema>({
     resolver: zodResolver(signUpSchema),
   });
 
-  const user = useSelector(selectUser);
+  // const user = useSelector(selectUser);
 
-  const [registerApiCall, { isLoading }] = useRegisterMutation();
+  // const [registerApiCall, { isLoading }] = useRegisterMutation();
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -102,12 +101,12 @@ function CreateByAdmin() {
     }
   };
 
-  const errHandler = (e: any) => {
-    Object.values(e)
+  const errHandler = (e: unknown) => {
+    Object.values(e as { message: string }[])
       .reverse()
       .forEach((e) => {
         toast.error("sign up failed", {
-          description: e.message as string,
+          description: e.message,
         });
       });
   };
@@ -161,8 +160,10 @@ function CreateByAdmin() {
                 {...register("confirmPassword")}
               />
             </div>
-            {isLoading && <Loader />}
-            <Button disabled={isSubmitting} type="submit" className="w-full">
+            {/* {isLoading && <Loader />} */}
+            <Button 
+            // disabled={isSubmitting} 
+            type="submit" className="w-full">
               Create an account
             </Button>
             {/* {errors.root&&(<div className="text-red-500">{errors.root.message}</div>)} */}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -14,25 +14,23 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { login, selectUser } from '@/features/userSlice';
 import {
-  Form,
   FormControl,
   FormDescription,
-  FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { CircleUser, Loader } from 'lucide-react';
+import { CircleUser} from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import { useUpdateUserMutation } from '@/features/usersApiSlice';
+// import { useUpdateUserMutation } from '@/features/usersApiSlice';
 
 
 const editUser = () => {
   const {register,
     handleSubmit,
-    formState:{errors,isSubmitting},
+    // formState:{errors,isSubmitting},
     // reset,
     setError,
   }=useForm<TProfileSchema>({
@@ -40,12 +38,20 @@ const editUser = () => {
   })
 
   const user=useSelector(selectUser)
-  const [updateProfile,{isLoading}]=useUpdateUserMutation()
+  // const [updateProfile,{isLoading}]=useUpdateUserMutation()
+
+
+  interface UserProfile {
+    name: string;
+    email: string;
+    image?: string;
+    createdTime: string;
+  }
 
   const navigate=useNavigate()
   const dispatch=useDispatch()
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [currentUser, setCurrentUser] = useState(null); 
+  const [currentUser, setCurrentUser] = useState<UserProfile | null>(null); 
   const [imagepreview,setImagePreview]=useState<string|null>(null)
 
  
@@ -182,10 +188,10 @@ const profileData={
 
 
 
-  const errHandler=(e:any)=>{
-    Object.values(e).reverse().forEach(e=>{
+  const errHandler=(e:unknown)=>{
+    Object.values(e as { message: string }[]).reverse().forEach(e=>{
       toast.error("sign up failed",{
-        description:e.message as string
+        description:e.message,
       })
     })
     
@@ -234,7 +240,7 @@ const profileData={
             <FormItem>
               <FormLabel htmlFor='email'>Email</FormLabel>
               <FormControl>
-                <Input id="email" defaultValue={currentUser?.email}/>
+              <Input id="email" defaultValue={currentUser?.email || ""} />
               </FormControl>
               <FormDescription>
                 This is your public email.
@@ -263,9 +269,9 @@ const profileData={
               <FormMessage />
             </FormItem>
             </div>
-            {isLoading&&<Loader/>}
+            {/* {isLoading&&<Loader/>} */}
                 <Button
-                  disabled={isSubmitting}
+                  // disabled={isSubmitting}
                   type="submit"
                   className="w-full mt-3"
                 >

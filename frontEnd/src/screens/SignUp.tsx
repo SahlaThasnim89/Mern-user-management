@@ -9,16 +9,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link, useNavigate } from "react-router-dom";
-import { SubmitErrorHandler, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import axios from 'axios';
 import { signUpSchema,TsignUpSchema} from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useDispatch, useSelector } from "react-redux";
 import { login, selectUser } from "@/features/userSlice";
-import Loader from "@/components/Loader";
-import { useRegisterMutation } from "@/features/usersApiSlice";
+// import Loader from "@/components/Loader";
+// import { useRegisterMutation } from "@/features/usersApiSlice";
 
 
 
@@ -38,7 +38,7 @@ export const description =
 function SignUp() {
   const {register,
     handleSubmit,
-    formState:{errors,isSubmitting},
+    // formState:{errors,isSubmitting},
     // reset,
     setError,
   }=useForm<TsignUpSchema>({
@@ -55,7 +55,7 @@ function SignUp() {
     }
   },[navigate,user])
 
-  const [registerApiCall,{isLoading}]=useRegisterMutation();
+  // const [{isLoading}]=useRegisterMutation();
 
 
 
@@ -119,13 +119,12 @@ function SignUp() {
   }
 
 
-  const errHandler=(e:any)=>{
-    Object.values(e).reverse().forEach(e=>{
+  const errHandler=(e:unknown)=>{
+    Object.values(e as { message: string }[]).reverse().forEach((e)=>{
       toast.error("sign up failed",{
-        description:e.message as string
+        description:e.message
       })
     })
-    
   }
 
   return (
@@ -178,9 +177,9 @@ function SignUp() {
                     {...register('confirmPassword')}
                   />
                 </div>
-                {isLoading&&<Loader/>}
+                {/* {isLoading&&<Loader/>} */}
                 <Button
-                  disabled={isSubmitting}
+                  // disabled={isSubmitting}
                   type="submit"
                   className="w-full"
                 >

@@ -25,6 +25,7 @@ export const signUpSchema=z.object({
 
   export const ProfileSchema=z.object({
     name:z.string().optional(),
+    email: z.string().email("Invalid email address").min(1, "Email is required"),
     password:z.string().optional().refine((val)=>!val||val.length>=6,{
       message:'Password must contain 6 charecters'}),
     confirmPassword:z.string().optional(),

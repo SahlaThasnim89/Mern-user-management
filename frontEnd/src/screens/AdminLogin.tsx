@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { loginSchema } from "@/lib/types";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { TloginSchema } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
@@ -18,8 +18,8 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { login, selectUser } from "@/features/userSlice";
 import { useEffect } from "react";
-import { useLoginMutation } from "@/features/usersApiSlice";
-import Loader from "@/components/Loader";
+// import { useLoginMutation } from "@/features/usersApiSlice";
+// import Loader from "@/components/Loader";
 
 export const description =
   "A login form with email and password. There's an option to login with Google and a link to sign up if you don't have an account.";
@@ -28,14 +28,14 @@ function AdminLogin() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    // formState: { errors, isSubmitting },
     setError,
   } = useForm<TloginSchema>({ resolver: zodResolver(loginSchema) });
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [loginApiCall, { isLoading }] = useLoginMutation();
+  // const [{ isLoading: }] = useLoginMutation();
 
   const user = useSelector(selectUser);
 
@@ -84,12 +84,12 @@ function AdminLogin() {
     }
   };
 
-  const errHandler = (e: any) => {
-    Object.values(e)
+  const errHandler = (e: unknown) => {
+    Object.values(e as { message: string }[])
       .reverse()
       .forEach((e) => {
         toast.error("sign up failed", {
-          description: e.message as string,
+          description: e.message,
         });
       });
   };
@@ -129,7 +129,7 @@ function AdminLogin() {
                 {...register("password")}
               />
             </div>
-            {isLoading && <Loader />}
+            {/* {isLoading && <Loader />} */}
             <Button type="submit" className="w-full">
               Login
             </Button>
